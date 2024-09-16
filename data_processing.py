@@ -1,10 +1,12 @@
 import re
 import zipfile
-from pdfminer.high_level import extract_text
+import pdfplumber
+from io import BytesIO
 
 def process_pdf(uploaded_file, pdf_zip):
     # Leer el archivo PDF cargado
-    text = extract_text(uploaded_file)
+    uploaded_file.seek(0)  # Asegúrate de que el puntero del archivo esté al principio
+    text = extract_text_from_pdf(BytesIO(uploaded_file.read()))
 
     # Buscar nombre
     nombre_match = re.search(r'Cognome e Nome:\s*(.+)', text)
@@ -34,7 +36,15 @@ def process_pdf(uploaded_file, pdf_zip):
     nuevo_nombre = f"{nombre}_{giudizio}_{scadenza}".replace(" ", "_").replace("/", "-") + ".pdf"
 
     # Añadir el archivo PDF procesado al archivo ZIP
+    uploaded_file.seek(0)  # Reinicia el puntero del archivo para que pueda ser leído nuevamente
     pdf_zip.writestr(nuevo_nombre, uploaded_file.read())
+
+def extract_text_from_pdf(file):
+    with pdfplumber.open(file) as pdf:
+        text = ""
+        for page in pdf.pages:
+            text += page.extract_text()
+    return text
 
 def process_pdfs(uploaded_files, zip_filename):
     # Crear el archivo ZIP para almacenar los PDFs procesados
