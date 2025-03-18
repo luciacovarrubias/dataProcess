@@ -85,7 +85,7 @@ def procesar_archivos(uploaded_file1 = None, uploaded_file2 = None, uploaded_hir
     valores_comunes["Codice Fiscale"] = valores_comunes["Codice Fiscale"].str.replace(r"\(ITA-CF\)", "", regex=True).str.strip()
     valores_comunes["Attivo"] = "1"
     valores_comunes["Programma visite"] = "1"
-    valores_comunes["Sottogrupo"] = np.NaN
+    valores_comunes["Sottogrupo"] = np.nan
     valores_comunes["Sede dell'utente"] = valores_comunes["Sede dell'utente"].str.split(",").str[0]
     valores_comunes["Sede del candidato"] = valores_comunes["Sede del candidato"].str.split(",").str[0]
     
