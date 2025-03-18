@@ -45,5 +45,7 @@ tzdata==2024.1
 urllib3==2.2.3
 watchdog==4.0.2
 pdfplumber==0.7.5
+openpyxl
+
 
 
