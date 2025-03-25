@@ -36,6 +36,8 @@ def main():
                         mime="application/zip"
                     )
                 st.balloons()
+
+                
     
 
     def ficha_ingreso():
@@ -62,14 +64,39 @@ def main():
                 time.sleep(1)
                 my_bar.empty()
 
-                # Agregar botón de descarga
+                
+                # st.info(f"Valores comunes encontrados en los reportes y hires: {clienteaccenture.valores_comunes_encontrados}")
+                # st.warning("Valor/es no enontrado/s en el archivo hires:")
+                # st.write(clienteaccenture.valores_comunes_no_encontrados)
+                st.divider()
+                st.subheader("Detalles")
+                col1, col2 = st.columns(2)
+
+                with col1:
+                    st.metric(
+                        label="⚠️ Valores NO encontrados",
+                        value=len(clienteaccenture.valores_comunes_no_encontrados),
+                        delta_color="off"
+                    )
+                    st.warning("**Valores no encontrados en Hires**")
+                    st.write(clienteaccenture.valores_comunes_no_encontrados)
+
+                with col2:
+                    st.metric(
+                    label="✅ Valores comunes encontrados",
+                    value=clienteaccenture.valores_comunes_encontrados
+                    )
+                    st.success(f"**Valores comunes encontrados:** {clienteaccenture.valores_comunes_encontrados}")
+                st.divider()
+                
                 st.download_button(
-                    label="Descargar archivo 📥",
-                    data=output,
-                    file_name="carica_utenti.xlsx",
-                    mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-                )
+                        label="Descargar archivo 📥",
+                        data=output,
+                        file_name="carica_utenti.xlsx",
+                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    )
                 st.balloons()
+
 
 
     def pagina_princiapl():

@@ -3,6 +3,7 @@ import numpy as np
 from io import BytesIO
 
 def procesar_archivos(uploaded_file1 = None, uploaded_file2 = None, uploaded_hires = None):
+    global valores_comunes_encontrados, valores_comunes_no_encontrados
     # Leer los archivos de los objetos UploadedFile
     uploaded_file1 = pd.read_excel(uploaded_file1, engine="openpyxl")
     uploaded_file2 = pd.read_excel(uploaded_file2, engine="openpyxl")
@@ -69,6 +70,13 @@ def procesar_archivos(uploaded_file1 = None, uploaded_file2 = None, uploaded_hir
     uploaded_hires["Candidate Legal Name"] = uploaded_hires["Candidate Legal Name"].astype(str).str.strip().str.lower()
     
     valores_comunes = template_proceso[template_proceso["Candidate Legal Name"].isin(uploaded_hires["Candidate Legal Name"])]
+
+    valores_comunes_encontrados = len(valores_comunes)
+    valores_no_encontrados = template_proceso[
+        ~template_proceso["Candidate Legal Name"].isin(uploaded_hires["Candidate Legal Name"])
+    ]
+    valores_comunes_no_encontrados = valores_no_encontrados["Candidate Legal Name"].head(10) # Mostrar los primeros 10
+
     
     uploaded_hires_seleccion = uploaded_hires[["Candidate Legal Name", "Employee ID", "Enterprise ID"]]
     valores_comunes = valores_comunes.merge(uploaded_hires_seleccion, on="Candidate Legal Name", how="left")
